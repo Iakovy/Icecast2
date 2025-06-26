@@ -56,11 +56,11 @@ services:
     networks:
       - public_icecast
     labels:
-      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.rocketseat-demo.duckdns.org`)"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik-dev.com)"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
       - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
       - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver"
-      # - "traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth@file" # Descomente para ativar autenticação
+      - "traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth@file" # Descomente para ativar autenticação
 
 
 networks:
