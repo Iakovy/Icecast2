@@ -1,0 +1,41 @@
+services:
+  server:
+    image: riftbit/icecast:1.3.0
+    ports: 
+    - 8000:8000
+    restart: always
+    environment:
+      ICE_RADIO_LISTEN_PORT: 8000
+      ICE_RADIO_HOSTNAME: "radio.icecast2.com"
+      ICE_RADIO_LOG_LEVEL: 4
+      ICE_RADIO_MAX_CLIENTS: 500
+      ICE_RADIO_MAX_SOURCES: 1
+      ICE_RADIO_ADMIN_PASSWORD: admin
+      ICE_RADIO_SOURCE_PASSWORD: source123
+      ICE_RADIO_RELAY_PASSWORD: admin123
+      ICE_RADIO_LOCATION: "Radio Icecast2"
+      ICE_RADIO_ADMIN_CONTACT: www.radio@icecast2.com
+      ICE_RADIO_ADDITIONAL_CONFIGS: "<directory></directory>"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - logs:/var/log/ices:rw
+    networks:
+      - public_icecast
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5' # hard processing
+          memory: 512M # hard caching
+      placement:
+        constraints:
+          - node.role == worker
+          - node.labels.can-run-icecast == yes
+
+networks:
+  public_icecast:
+    external: true
+
+volumes:
+  logs:
